@@ -32,26 +32,21 @@ function eraseRole() {
 
 typeRole();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const elements = document.querySelectorAll(
-    ".section, .edu-card, .project-card, .skills-list li"
-  );
-
-  elements.forEach((el) => el.classList.add("scroll-animate"));
-
-  function handleScroll() {
-    const triggerBottom = window.innerHeight * 0.85;
-
-    elements.forEach((el) => {
-      const elementTop = el.getBoundingClientRect().top;
-
-    
-      if (elementTop < triggerBottom) {
-        el.classList.add("visible");
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible"); // reset animation
       }
     });
+  },
+  {
+    threshold: 0.2
   }
+);
 
-  window.addEventListener("scroll", handleScroll);
-  handleScroll(); 
+document.querySelectorAll(".scroll-animate").forEach(el => {
+  observer.observe(el);
 });
